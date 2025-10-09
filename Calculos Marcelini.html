@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infografía Técnica: Proceso de Soldadura FCAW | Fábrica Marcelini</title>
+    <title>Dashboard Técnico: Proceso de Soldadura FCAW | Fábrica Marcelini</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +12,7 @@
     <style>
         body {
             font-family: 'Lato', sans-serif;
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
         }
         h1, h2, h3, .stat-number {
             font-family: 'Roboto Condensed', sans-serif;
@@ -23,155 +23,171 @@
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
-            height: 320px;
-            max-height: 350px;
+            height: 300px;
+            max-height: 320px;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
+         .projection-chart-container {
+            position: relative;
+            height: 350px;
+            max-height: 400px;
+            width: 100%;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-100 text-slate-800">
 
-    <header class="bg-[#003B73] text-white text-center py-10 px-4">
-        <h1 class="text-4xl md:text-5xl font-bold tracking-tight">INFOGRAFÍA TÉCNICA: PROCESO DE SOLDADURA FCAW</h1>
-        <p class="mt-4 text-lg text-sky-200">Análisis de Producción y Calidad para Vigas de Carretón | Fábrica Marcelini</p>
+    <header class="bg-[#022c43] text-white text-center py-10 px-4 shadow-xl">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight">DASHBOARD TÉCNICO DE SOLDADURA</h1>
+        <p class="mt-4 text-lg text-[#ffd700]">Análisis Interactivo de Proceso | Fábrica Marcelini</p>
     </header>
 
     <main class="max-w-7xl mx-auto p-4 md:p-8">
 
-        <section id="input-data" class="mb-16">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-[#003B73]">Datos de Entrada para el Análisis</h2>
-                <p class="mt-2 text-slate-600 max-w-3xl mx-auto">Esta tabla resume los parámetros operativos y del consumible utilizados como base para todos los cálculos de esta infografía.</p>
-            </div>
-            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg max-w-4xl mx-auto overflow-x-auto">
-                <table class="w-full text-left min-w-[600px]">
-                    <thead class="border-b-2 border-slate-200">
-                        <tr>
-                            <th class="py-3 px-4 text-sm font-bold text-[#003B73] uppercase tracking-wider">Parámetro</th>
-                            <th class="py-3 px-4 text-sm font-bold text-[#003B73] uppercase tracking-wider">Valor</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200">
-                        <tr class="hover:bg-slate-50">
-                            <td class="py-4 px-4 font-semibold text-slate-700">Consumible (Alambre)</td>
-                            <td class="py-4 px-4 text-slate-600">ESAB Dual Shield 7100 (E71T-1C), 1.2 mm</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="py-4 px-4 font-semibold text-slate-700">Gas de Protección</td>
-                            <td class="py-4 px-4 text-slate-600">100% CO₂ @ 15 l/min</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="py-4 px-4 font-semibold text-slate-700">Parámetros Eléctricos</td>
-                            <td class="py-4 px-4 text-slate-600">33.5 Voltios / 300 Amperes (DC+)</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="py-4 px-4 font-semibold text-slate-700">Velocidad de Traslación</td>
-                            <td class="py-4 px-4 text-slate-600">43 cm/minuto</td>
-                        </tr>
-                         <tr class="hover:bg-slate-50">
-                            <td class="py-4 px-4 font-semibold text-slate-700">Tasa de Deposición (Ficha)</td>
-                            <td class="py-4 px-4 text-slate-600">5.3 kg/hora</td>
-                        </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="py-4 px-4 font-semibold text-slate-700">Longitud Total de Soldadura</td>
-                            <td class="py-4 px-4 text-slate-600">23.51 metros por viga</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="kpis" class="mb-16">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-[#003B73]">Indicadores Clave por Viga (Actualizado)</h2>
-                <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Resumen de los resultados más importantes del proceso, cuantificando la eficiencia de producción y el parámetro de calidad metalúrgico fundamental.</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-[#0074B7]">
-                    <div class="stat-number text-5xl font-bold text-[#0074B7]">27</div>
-                    <p class="mt-2 text-slate-500 font-semibold">Minutos de Producción</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-[#BF5700]">
-                    <div class="stat-number text-5xl font-bold text-[#BF5700]">5.68</div>
-                    <p class="mt-2 text-slate-500 font-semibold">kg de Alambre Consumido</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-[#64748b]">
-                    <div class="stat-number text-5xl font-bold text-[#64748b]">1.53</div>
-                    <p class="mt-2 text-slate-500 font-semibold">kg de Gas (CO₂) Consumido</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-[#FFA500]">
-                    <div class="stat-number text-5xl font-bold text-[#FFA500]">14.02</div>
-                    <p class="mt-2 text-slate-500 font-semibold">kJ/cm de Aporte Térmico</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="consumables" class="mb-16">
-             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-bold text-center text-[#003B73] mb-4">Desglose de Consumibles Totales</h3>
-                     <div class="chart-container">
-                        <canvas id="consumablesChart"></canvas>
+        <section id="input-data" class="mb-12">
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
+                <div class="flex items-center mb-4">
+                    <div class="bg-sky-100 text-sky-700 p-3 rounded-full mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
                     </div>
+                    <h2 class="text-2xl font-bold text-slate-800">Parámetros de Configuración</h2>
                 </div>
-                <div class="prose max-w-none">
-                    <h3 class="text-2xl font-bold text-[#003B73]">Eficiencia y Materiales</h3>
-                    <p class="text-slate-600">El análisis de consumo distingue entre el alambre total alimentado y el que finalmente se deposita. Por cada viga, se **consumen 7.21 kg de materiales**.</p>
-                    <p class="text-slate-600">El **alambre de aporte constituye el 79%** del peso total de consumibles. Es importante notar que del total de **5.68 kg de alambre consumido**, solo **4.83 kg se depositan** en la viga, lo que representa una eficiencia de deposición del 85%. El 15% restante se pierde en forma de escoria y salpicaduras, un factor inherente al proceso FCAW.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left min-w-[600px]">
+                        <thead class="border-b-2 border-slate-200">
+                            <tr>
+                                <th class="py-3 px-4 text-sm font-bold text-slate-500 uppercase">Parámetro</th>
+                                <th class="py-3 px-4 text-sm font-bold text-slate-500 uppercase">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-3 px-4 font-semibold text-slate-700">Consumible (Alambre)</td>
+                                <td class="py-3 px-4 text-slate-600">ESAB Dual Shield 7100 (E71T-1C), 1.2 mm</td>
+                            </tr>
+                             <tr class="hover:bg-slate-50">
+                                <td class="py-3 px-4 font-semibold text-slate-700">Parámetros Eléctricos</td>
+                                <td class="py-3 px-4 text-slate-600">33.5 Voltios / 300 Amperes (DC+)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="py-3 px-4 font-semibold text-slate-700">Velocidad de Traslación</td>
+                                <td class="py-3 px-4 text-slate-600">43 cm/minuto</td>
+                            </tr>
+                             <tr class="hover:bg-slate-50">
+                                <td class="py-3 px-4 font-semibold text-slate-700">Tasa de Deposición</td>
+                                <td class="py-3 px-4 text-slate-600">5.3 kg/hora</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
 
-        <section id="process" class="mb-16">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-[#003B73]">Metodología del Proceso en Dos Fases</h2>
-                <p class="mt-2 text-slate-600 max-w-2xl mx-auto">La fabricación de cada viga se divide en dos etapas de soldadura distintas, cada una optimizada para una sección específica de la pieza.</p>
-            </div>
-            <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-full md:w-1/3 border-b-4 border-[#0074B7]">
-                    <h3 class="font-bold text-xl text-[#0074B7]">FASE 1: Superior</h3>
-                    <p class="text-sm mt-2 text-slate-500">Aplicación de 53 cordones intermitentes ("Paso Peregrino") para controlar el calor en la zona curva.</p>
-                </div>
-                <div class="text-4xl font-bold text-[#FFA500] transform md:-rotate-90">➔</div>
-                <div class="bg-white p-6 rounded-lg shadow-lg w-full md:w-1/3 border-b-4 border-[#BF5700]">
-                    <h3 class="font-bold text-xl text-[#BF5700]">FASE 2: Inferior</h3>
-                    <p class="text-sm mt-2 text-slate-500">Aplicación de 2 cordones largos y continuos para máxima integridad estructural en la base.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="quality" class="mb-16">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-[#003B73]">Garantía de Calidad: Propiedades Mecánicas</h2>
-                <p class="mt-2 text-slate-600 max-w-2xl mx-auto">El consumible seleccionado asegura que el metal depositado cumple con rigurosos estándares de resistencia y tenacidad, validando la integridad estructural de la soldadura.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold text-center text-[#003B73] mb-4">Análisis de Tensión (MPa)</h3>
-                    <div class="chart-container">
-                        <canvas id="tensileChart"></canvas>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 flex flex-col gap-8">
+                <section id="kpis">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center border border-slate-200">
+                            <div class="bg-blue-100 text-blue-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                            <div>
+                                <p class="text-slate-500 font-semibold">Tiempo de Producción</p>
+                                <div class="stat-number text-4xl font-bold text-slate-800">27 Minutos</div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center border border-slate-200">
+                           <div class="bg-amber-100 text-amber-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547a2 2 0 00-.547 1.806l.477 2.387a6 6 0 00.517 3.86l.158.318a6 6 0 00.517 3.86l2.387.477a2 2 0 001.806-.547a2 2 0 00.547-1.806l-.477-2.387a6 6 0 00-.517-3.86l-.158-.318a6 6 0 00-.517-3.86l-2.387-.477" /></svg></div>
+                            <div>
+                                <p class="text-slate-500 font-semibold">Alambre Consumido</p>
+                                <div class="stat-number text-4xl font-bold text-slate-800">5.68 kg</div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center border border-slate-200">
+                            <div class="bg-slate-100 text-slate-600 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.343 17.657A8 8 0 0117.657 9.343" /></svg></div>
+                            <div>
+                                <p class="text-slate-500 font-semibold">Gas (CO₂) Consumido</p>
+                                <div class="stat-number text-4xl font-bold text-slate-800">1.53 kg</div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center border border-slate-200">
+                             <div class="bg-red-100 text-red-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
+                            <div>
+                                <p class="text-slate-500 font-semibold">Aporte Térmico</p>
+                                <div class="stat-number text-4xl font-bold text-slate-800">14.02 kJ/cm</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold text-center text-[#003B73] mb-4">Resistencia al Impacto Charpy (Joules)</h3>
-                    <div class="chart-container">
-                        <canvas id="impactChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
+                </section>
 
-        <section id="projection">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-[#003B73]">Proyección de Producción a Escala</h2>
-                <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Este gráfico proyecta cómo escalan el consumo de alambre y el tiempo de producción a medida que aumenta el número de vigas fabricadas, una herramienta clave para la planificación a largo plazo.</p>
+                <section id="quality">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
+                         <div class="flex items-center mb-4">
+                            <div class="bg-green-100 text-green-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                            <h2 class="text-2xl font-bold text-slate-800">Garantía de Calidad Mecánica</h2>
+                        </div>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             <div>
+                                <h3 class="text-lg font-bold text-center text-slate-600 mb-2">Análisis de Tensión (MPa)</h3>
+                                <div class="chart-container">
+                                    <canvas id="tensileChart"></canvas>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-center text-slate-600 mb-2">Resistencia al Impacto (Joules)</h3>
+                                <div class="chart-container">
+                                    <canvas id="impactChart"></canvas>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </section>
             </div>
-            <div class="bg-white p-8 rounded-lg shadow-lg">
-                 <div class="chart-container h-[400px] max-h-[450px] w-full max-w-4xl">
+
+            <div class="lg:col-span-1 flex flex-col gap-8">
+                <section id="consumables">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200 h-full">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-purple-100 text-purple-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg></div>
+                            <h2 class="text-2xl font-bold text-slate-800">Análisis de Consumibles</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="consumablesChart"></canvas>
+                        </div>
+                         <p class="text-slate-600 mt-6 text-sm">El **alambre de aporte constituye el 79%** del peso total de consumibles. Del total de **5.68 kg** gastados, **4.83 kg** se depositan efectivamente (eficiencia del 85%).</p>
+                    </div>
+                </section>
+                 <section id="process">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200 h-full">
+                         <div class="flex items-center mb-4">
+                            <div class="bg-indigo-100 text-indigo-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg></div>
+                            <h2 class="text-2xl font-bold text-slate-800">Proceso en Dos Fases</h2>
+                        </div>
+                        <div class="space-y-4 mt-4">
+                           <div class="flex items-start">
+                               <div class="bg-sky-500 text-white font-bold rounded-full h-8 w-8 flex items-center justify-center mr-4 mt-1">1</div>
+                               <div>
+                                   <h3 class="font-bold text-slate-700">FASE 1: Superior</h3>
+                                   <p class="text-sm text-slate-500">53 cordones intermitentes ("Paso Peregrino") para controlar el calor en la zona curva.</p>
+                               </div>
+                           </div>
+                            <div class="flex items-start">
+                               <div class="bg-amber-500 text-white font-bold rounded-full h-8 w-8 flex items-center justify-center mr-4 mt-1">2</div>
+                               <div>
+                                   <h3 class="font-bold text-slate-700">FASE 2: Inferior</h3>
+                                   <p class="text-sm text-slate-500">2 cordones largos y continuos para máxima integridad estructural en la base.</p>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <section id="projection" class="mt-8">
+             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
+                <div class="flex items-center mb-4">
+                    <div class="bg-teal-100 text-teal-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg></div>
+                    <h2 class="text-2xl font-bold text-slate-800">Proyección de Producción a Escala</h2>
+                </div>
+                <div class="projection-chart-container">
                     <canvas id="projectionChart"></canvas>
                 </div>
             </div>
@@ -179,8 +195,8 @@
 
     </main>
     
-    <footer class="bg-[#003B73] text-white text-center mt-16 py-6">
-        <p class="text-sky-200">Reporte Técnico Interactivo | &copy; 2025 Fábrica Marcelini</p>
+    <footer class="bg-[#022c43] text-white text-center mt-16 py-6">
+        <p class="text-[#ffd700] text-sm">Reporte Técnico Interactivo | &copy; 2025 Fábrica Marcelini</p>
     </footer>
 
     <script>
@@ -258,8 +274,8 @@
                     labels: ['Alambre Consumido (kg)', 'Gas CO₂ (kg)'],
                     datasets: [{
                         data: [5.68, 1.53],
-                        backgroundColor: ['#BF5700', '#64748b'],
-                        borderColor: '#f8fafc',
+                        backgroundColor: ['#d97706', '#64748b'],
+                        borderColor: '#ffffff',
                         borderWidth: 4,
                         hoverOffset: 4
                     }]
@@ -274,7 +290,7 @@
                     datasets: [{
                         label: 'Resistencia (MPa)',
                         data: [491, 563],
-                        backgroundColor: ['#0074B7', '#003B73'],
+                        backgroundColor: ['#3b82f6', '#1e40af'],
                         borderRadius: 4,
                         barPercentage: 0.6
                     }]
@@ -289,7 +305,7 @@
                     datasets: [{
                         label: 'Energía Absorbida (Joules)',
                         data: [90, 58],
-                        backgroundColor: ['#FFA500', '#BF5700'],
+                        backgroundColor: ['#f59e0b', '#d97706'],
                         borderRadius: 4,
                         barPercentage: 0.6
                     }]
@@ -309,8 +325,8 @@
                         {
                             label: 'Consumo Alambre (kg)',
                             data: projectionWireData,
-                            borderColor: '#BF5700',
-                            backgroundColor: 'rgba(191, 87, 0, 0.1)',
+                            borderColor: '#d97706',
+                            backgroundColor: 'rgba(217, 119, 6, 0.1)',
                             fill: true,
                             tension: 0.4,
                             yAxisID: 'y'
@@ -318,8 +334,8 @@
                         {
                             label: 'Tiempo Producción (Horas)',
                             data: projectionTimeData,
-                            borderColor: '#0074B7',
-                            backgroundColor: 'rgba(0, 116, 183, 0.1)',
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
                             fill: true,
                             tension: 0.4,
                             yAxisID: 'y1'
@@ -333,13 +349,13 @@
                             type: 'linear',
                             display: true,
                             position: 'left',
-                            title: { display: true, text: 'Consumo de Alambre (kg)' }
+                            title: { display: true, text: 'Consumo de Alambre (kg)', color: '#d97706' }
                         },
                         y1: {
                             type: 'linear',
                             display: true,
                             position: 'right',
-                            title: { display: true, text: 'Tiempo de Producción (Horas)' },
+                            title: { display: true, text: 'Tiempo de Producción (Horas)', color: '#3b82f6' },
                             grid: { drawOnChartArea: false }
                         },
                         x: { ...chartDefaultOptions.scales.x }
