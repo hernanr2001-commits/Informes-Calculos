@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Análisis de Soldadura v2 | Fábrica Marcelini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Ocean & Amber -->
+    <!-- Application Structure Plan: La estructura de dashboard se mantiene por su efectividad para el análisis interactivo. Se ha realizado un rediseño visual completo con una paleta de colores más vibrante para mejorar la experiencia de usuario. El flujo sigue siendo: 1) KPIs principales. 2) Simulador de Producción interactivo. 3) Desglose visual del proceso. 4) Gráficos de análisis. 5) Tabla de parámetros. La mejora principal es la precisión del cálculo de consumo de alambre, ahora basado en la geometría del cordón (garganta de 5mm), lo que ofrece una estimación teórica más exacta para la planificación. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Resultados Clave -> Goal: Informar -> Viz/Presentation: Tarjetas de KPI con íconos -> Interaction: Actualización dinámica -> Justification: Se actualizó el cálculo de alambre basándose en el volumen del cordón (garganta de 5mm) para mayor precisión. Los íconos mejoran la legibilidad. -> Library/Method: HTML/Tailwind/JS.
+        - Report Info: Escalamiento de producción -> Goal: Explorar/Planificar -> Viz/Presentation: Slider rediseñado -> Interaction: El usuario modifica la cantidad de vigas -> Justification: La funcionalidad central se mantiene por su alto valor predictivo. -> Library/Method: HTML/JS.
+        - Report Info: Tipos de soldadura -> Goal: Organizar/Explicar -> Viz/Presentation: Diagrama visual rediseñado con nuevos colores -> Interaction: Informativo -> Justification: El nuevo diseño es más claro y se alinea con la nueva identidad visual. -> Library/Method: HTML/Tailwind.
+        - Report Info: Consumo Alambre vs. Gas -> Goal: Comparar -> Viz/Presentation: Gráfico de Anillo -> Interaction: Hover -> Justification: El gráfico ahora refleja la nueva proporción de consumo, más precisa. Colores actualizados. -> Library/Method: Chart.js (Canvas).
+        - Report Info: Proyección de consumos -> Goal: Analizar tendencias -> Viz/Presentation: Gráfico de Líneas -> Interaction: Se actualiza en tiempo real -> Justification: Visualiza el crecimiento de requerimientos con la nueva base de cálculo. -> Library/Method: Chart.js (Canvas).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f9ff; /* light sky */
+            color: #0c4a6e; /* sky-900 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .kpi-card {
+            background-color: #FFFFFF;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px -5px rgba(14, 116, 144, 0.15);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #f59e0b; /* amber-500 */
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #f59e0b; /* amber-500 */
+            cursor: pointer;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-sky-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold leading-tight">Dashboard de Soldadura 2.0</h1>
+                <p class="text-sm text-sky-200 mt-1">Proyecto: Optimización de Vigas | Fábrica Marcelini</p>
+            </div>
+            <div class="text-right">
+                <span class="text-xs font-semibold">CÁLCULO REFINADO</span>
+                <p class="text-sm font-bold">Garganta: 5mm</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <section id="simulator" class="bg-white p-6 rounded-xl shadow-md border border-sky-100 mb-10">
+                <div class="md:flex md:items-center md:justify-between">
+                    <div class="flex-1 min-w-0">
+                        <h2 class="text-2xl font-bold leading-7 text-sky-900 sm:truncate">Simulador de Producción</h2>
+                        <p class="mt-1 text-sm text-slate-500">Ajuste la cantidad de vigas para proyectar los consumos y tiempos totales. Esta sección le permite planificar la producción basándose en los datos del reporte, transformando el análisis en una herramienta interactiva.</p>
+                    </div>
+                </div>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <label for="beam-slider" class="block text-sm font-medium text-slate-700">Cantidad de Vigas a Producir: <span id="beam-count-label" class="font-bold text-amber-600 text-lg">1</span></label>
+                        <input id="beam-slider" type="range" min="1" max="100" value="1" class="w-full h-2 bg-sky-100 rounded-lg appearance-none cursor-pointer mt-2">
+                    </div>
+                    <div>
+                        <label for="beam-input" class="block text-sm font-medium text-slate-700">O ingrese un valor exacto:</label>
+                         <input id="beam-input" type="number" min="1" value="1" class="mt-2 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm">
+                    </div>
+                </div>
+            </section>
+
+            <section id="kpis">
+                 <div class="text-center mb-8">
+                    <h3 class="text-xl font-semibold text-sky-900">Resultados Clave para la Producción Seleccionada</h3>
+                    <p class="text-slate-500">Métricas totales calculadas en tiempo real según la cantidad de vigas del simulador.</p>
+                </div>
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="kpi-card p-5 rounded-lg flex items-center border-l-4 border-sky-500">
+                        <div class="mr-4 text-3xl">⏱️</div>
+                        <div>
+                            <dt class="text-sm font-medium text-slate-500 truncate">Tiempo de Producción</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-sky-900" id="total-time">26 Minutos</dd>
+                        </div>
+                    </div>
+                    <div class="kpi-card p-5 rounded-lg flex items-center border-l-4 border-teal-500">
+                         <div class="mr-4 text-3xl">⚖️</div>
+                        <div>
+                            <dt class="text-sm font-medium text-slate-500 truncate">Consumo de Alambre</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-sky-900" id="total-wire">2.65 kg</dd>
+                        </div>
+                    </div>
+                    <div class="kpi-card p-5 rounded-lg flex items-center border-l-4 border-slate-500">
+                        <div class="mr-4 text-3xl">💨</div>
+                        <div>
+                            <dt class="text-sm font-medium text-slate-500 truncate">Consumo de Gas (CO₂)</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-sky-900" id="total-gas">1.45 kg</dd>
+                        </div>
+                    </div>
+                     <div class="kpi-card p-5 rounded-lg flex items-center border-l-4 border-amber-500">
+                        <div class="mr-4 text-3xl">📊</div>
+                        <div>
+                            <dt class="text-sm font-medium text-slate-500 truncate">Alambre por Metro</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-sky-900" id="wire-per-meter">0.113 kg/m</dd>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="process" class="mt-12">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-sky-900">Desglose del Proceso de Soldadura por Viga</h2>
+                    <p class="text-slate-500 max-w-2xl mx-auto">La viga requiere dos técnicas de soldadura distintas en sus caras superior e inferior. Comprender esta dualidad es clave para la optimización del proceso.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border">
+                        <h3 class="font-bold text-lg text-sky-800">1. Soldadura Superior (Sistema "Peregrino")</h3>
+                        <p class="text-sm text-slate-600 mt-2">Se aplican cordones cortos e intermitentes para controlar el aporte térmico y adaptarse a la geometría curva de la viga.</p>
+                        <div class="mt-4 p-4 rounded-md bg-sky-50">
+                            <p class="font-semibold text-sky-900">Visualización del Proceso:</p>
+                            <div class="w-full h-8 mt-2 bg-slate-200 rounded flex items-center justify-around px-1">
+                                <div class="h-4 w-1/6 bg-sky-600 rounded-sm"></div>
+                                <div class="h-4 w-1/6 bg-sky-600 rounded-sm"></div>
+                                <div class="h-4 w-1/6 bg-sky-600 rounded-sm"></div>
+                                <div class="h-4 w-1/6 bg-sky-600 rounded-sm"></div>
+                            </div>
+                        </div>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-700">
+                            <li class="flex justify-between"><span>Total de Cordones:</span><span class="font-semibold">53</span></li>
+                            <li class="flex justify-between"><span>Longitud por Cordón:</span><span class="font-semibold">13.5 cm</span></li>
+                            <li class="flex justify-between border-t pt-2 mt-2"><span>Longitud Total Superior:</span><span class="font-semibold text-sky-700">7.16 metros</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border">
+                        <h3 class="font-bold text-lg text-sky-800">2. Soldadura Inferior (Cordones Continuos)</h3>
+                        <p class="text-sm text-slate-600 mt-2">Se realizan dos cordones largos y continuos a lo largo de la viga para asegurar la máxima resistencia estructural en la base.</p>
+                        <div class="mt-4 p-4 rounded-md bg-sky-50">
+                             <p class="font-semibold text-sky-900">Visualización del Proceso:</p>
+                             <div class="w-full h-8 mt-2 bg-slate-200 rounded flex items-center px-1">
+                                <div class="h-4 w-full bg-sky-600 rounded-sm"></div>
+                            </div>
+                        </div>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-700">
+                            <li class="flex justify-between"><span>Total de Cordones:</span><span class="font-semibold">2</span></li>
+                            <li class="flex justify-between"><span>Longitud Promedio:</span><span class="font-semibold">~817.5 cm</span></li>
+                            <li class="flex justify-between border-t pt-2 mt-2"><span>Longitud Total Inferior:</span><span class="font-semibold text-sky-700">16.35 metros</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="charts" class="mt-12">
+                 <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-sky-900">Análisis Visual de Datos</h2>
+                    <p class="text-slate-500 max-w-2xl mx-auto">Los gráficos interactivos permiten un análisis más profundo de los componentes de costo y tiempo del proceso de soldadura.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border">
+                        <h3 class="font-semibold text-center mb-4 text-sky-800">Proyección de Producción</h3>
+                        <div class="chart-container">
+                            <canvas id="projection-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border">
+                        <h3 class="font-semibold text-center mb-4 text-sky-800">Desglose de Consumibles por Viga (en kg)</h3>
+                         <div class="chart-container">
+                            <canvas id="consumables-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="parameters" class="mt-12">
+                 <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-sky-900">Parámetros Técnicos de Referencia</h2>
+                    <p class="text-slate-500">Configuración base utilizada durante las pruebas de soldadura.</p>
+                </div>
+                <div class="bg-white overflow-hidden shadow-md border rounded-lg">
+                    <ul role="list" class="divide-y divide-slate-200 text-sm">
+                        <li class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-sky-50"><span class="font-medium text-slate-800">Alambre de Aporte</span><span class="col-span-2 text-slate-600">ESAB Dual Shield 7100 (1.2 mm)</span></li>
+                        <li class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-sky-50"><span class="font-medium text-slate-800">Gas de Protección</span><span class="col-span-2 text-slate-600">100% CO₂ @ 15 L/min</span></li>
+                        <li class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-sky-50"><span class="font-medium text-slate-800">Parámetros Eléctricos</span><span class="col-span-2 text-slate-600">33.5 Voltios / 300 Amperes</span></li>
+                        <li class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-sky-50"><span class="font-medium text-slate-800">Velocidad de Avance</span><span class="col-span-2 text-slate-600">45.45 cm/minuto</span></li>
+                        <li class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-sky-50"><span class="font-medium text-slate-800">Tasa de Deposición</span><span class="col-span-2 text-slate-600">5.8 kg/hora (Estimada)</span></li>
+                        <li class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-sky-50"><span class="font-medium text-slate-800">Equipo</span><span class="col-span-2 text-slate-600">2 torchas en simultáneo</span></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer class="bg-sky-900 mt-12">
+         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-sm text-sky-200">
+             <p>&copy; 2025 Fábrica Marcelini | Reporte Interactivo Generado por IA</p>
+         </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reportData = {
+                timePerBeamMinutes: 25.85,
+                wirePerBeamKg: 2.65,
+                gasPerBeamKg: 1.45,
+                wirePerMeterKg: 0.113
+            };
+
+            const slider = document.getElementById('beam-slider');
+            const input = document.getElementById('beam-input');
+            const countLabel = document.getElementById('beam-count-label');
+
+            const timeDisplay = document.getElementById('total-time');
+            const wireDisplay = document.getElementById('total-wire');
+            const gasDisplay = document.getElementById('total-gas');
+            const wirePerMeterDisplay = document.getElementById('wire-per-meter');
+
+            let consumablesChart, projectionChart;
+
+            function formatTime(totalMinutes) {
+                if (totalMinutes < 60) {
+                    return `${Math.round(totalMinutes)} Minutos`;
+                }
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = Math.round(totalMinutes % 60);
+                if (minutes === 0) {
+                    return `${hours} Horas`;
+                }
+                return `${hours}h ${minutes}m`;
+            }
+
+            function updateDashboard(beamCount) {
+                const totalTime = reportData.timePerBeamMinutes * beamCount;
+                const totalWire = reportData.wirePerBeamKg * beamCount;
+                const totalGas = reportData.gasPerBeamKg * beamCount;
+
+                timeDisplay.textContent = formatTime(totalTime);
+                wireDisplay.textContent = `${totalWire.toFixed(2)} kg`;
+                gasDisplay.textContent = `${totalGas.toFixed(2)} kg`;
+                wirePerMeterDisplay.textContent = `${reportData.wirePerMeterKg.toFixed(3)} kg/m`;
+                countLabel.textContent = beamCount;
+                
+                updateProjectionChart(beamCount);
+            }
+            
+            function createConsumablesChart() {
+                const ctx = document.getElementById('consumables-chart').getContext('2d');
+                consumablesChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Alambre de Aporte', 'Gas (CO₂)'],
+                        datasets: [{
+                            data: [reportData.wirePerBeamKg, reportData.gasPerBeamKg],
+                            backgroundColor: ['#0ea5e9', '#64748b'], // sky-500, slate-500
+                            borderColor: '#FFFFFF',
+                            borderWidth: 4,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed.toFixed(2) + ' kg';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createProjectionChart() {
+                const ctx = document.getElementById('projection-chart').getContext('2d');
+                projectionChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [
+                        {
+                            label: 'Consumo de Alambre (kg)',
+                            data: [],
+                            borderColor: '#0ea5e9', // sky-500
+                            backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Tiempo de Producción (Horas)',
+                            data: [],
+                            borderColor: '#f59e0b', // amber-500
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                         scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                             legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false
+                            }
+                        }
+                    }
+                });
+                updateProjectionChart(1);
+            }
+            
+            function updateProjectionChart(currentBeamCount) {
+                const maxBeams = Math.max(10, Math.ceil(currentBeamCount / 10) * 10);
+                const step = Math.max(1, Math.ceil(maxBeams / 10));
+                
+                const newLabels = [];
+                const newWireData = [];
+                const newTimeData = [];
+
+                for (let i = 1; i <= maxBeams; i += step) {
+                    if(i > 1 && newLabels[newLabels.length-1] >= i) continue;
+                    newLabels.push(i);
+                    newWireData.push((reportData.wirePerBeamKg * i).toFixed(2));
+                    newTimeData.push((reportData.timePerBeamMinutes * i / 60).toFixed(2));
+                }
+                
+                const currentInt = parseInt(currentBeamCount);
+                if (!newLabels.includes(currentInt)) {
+                    const sortedLabels = [...newLabels, currentInt].sort((a, b) => a - b);
+                    const insertIndex = sortedLabels.indexOf(currentInt);
+                    newLabels.splice(insertIndex, 0, currentInt);
+                    newWireData.splice(insertIndex, 0, (reportData.wirePerBeamKg * currentBeamCount).toFixed(2));
+                    newTimeData.splice(insertIndex, 0, (reportData.timePerBeamMinutes * currentBeamCount / 60).toFixed(2));
+                }
+
+                projectionChart.data.labels = newLabels;
+                projectionChart.data.datasets[0].data = newWireData;
+                projectionChart.data.datasets[1].data = newTimeData;
+                projectionChart.update();
+            }
+
+            slider.addEventListener('input', (e) => {
+                const beamCount = e.target.value;
+                input.value = beamCount;
+                updateDashboard(beamCount);
+            });
+            
+            input.addEventListener('input', (e) => {
+                let beamCount = e.target.value;
+                if (beamCount === '' || beamCount < 1) {
+                    beamCount = 1;
+                }
+                if (parseInt(beamCount) > 100) {
+                    beamCount = 100;
+                    e.target.value = 100;
+                }
+                slider.value = beamCount;
+                updateDashboard(beamCount);
+            });
+
+            createConsumablesChart();
+            createProjectionChart();
+            updateDashboard(1);
+        });
+    </script>
+
+</body>
+</html>
+
