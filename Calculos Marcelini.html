@@ -47,10 +47,11 @@
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
                 <div class="flex items-center mb-4">
                     <div class="bg-sky-100 text-sky-700 p-3 rounded-full mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+                        <svg xmlns="http://www.w.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
                     </div>
                     <h2 class="text-2xl font-bold text-slate-800">Parámetros de Configuración</h2>
                 </div>
+                 <p class="text-slate-600 mb-6 text-sm">La precisión de cualquier análisis depende de la calidad de los datos de entrada. La siguiente tabla detalla los parámetros operativos y las especificaciones del consumible que sirven como base para todos los cálculos y gráficos presentados en este dashboard.</p>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left min-w-[600px]">
                         <thead class="border-b-2 border-slate-200">
@@ -86,33 +87,45 @@
             <div class="lg:col-span-2 flex flex-col gap-8">
                 <section id="kpis">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center border border-slate-200">
-                            <div class="bg-blue-100 text-blue-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-                            <div>
-                                <p class="text-slate-500 font-semibold">Tiempo de Producción</p>
-                                <div class="stat-number text-4xl font-bold text-slate-800">27 Minutos</div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-slate-200">
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 text-blue-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                                <div>
+                                    <p class="text-slate-500 font-semibold">Tiempo de Producción</p>
+                                    <div class="stat-number text-4xl font-bold text-slate-800">27 Minutos</div>
+                                </div>
                             </div>
+                            <p class="text-xs text-slate-400 mt-3">Mide el tiempo de arco abierto total, clave para determinar la cadencia y capacidad productiva.</p>
                         </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center border border-slate-200">
-                           <div class="bg-amber-100 text-amber-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547a2 2 0 00-.547 1.806l.477 2.387a6 6 0 00.517 3.86l.158.318a6 6 0 00.517 3.86l2.387.477a2 2 0 001.806-.547a2 2 0 00.547-1.806l-.477-2.387a6 6 0 00-.517-3.86l-.158-.318a6 6 0 00-.517-3.86l-2.387-.477" /></svg></div>
-                            <div>
-                                <p class="text-slate-500 font-semibold">Alambre Consumido</p>
-                                <div class="stat-number text-4xl font-bold text-slate-800">5.68 kg</div>
-                            </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-slate-200">
+                           <div class="flex items-center">
+                               <div class="bg-amber-100 text-amber-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547a2 2 0 00-.547 1.806l.477 2.387a6 6 0 00.517 3.86l.158.318a6 6 0 00.517 3.86l2.387.477a2 2 0 001.806-.547a2 2 0 00.547-1.806l-.477-2.387a6 6 0 00-.517-3.86l-.158-.318a6 6 0 00-.517-3.86l-2.387-.477" /></svg></div>
+                                <div>
+                                    <p class="text-slate-500 font-semibold">Alambre Consumido</p>
+                                    <div class="stat-number text-4xl font-bold text-slate-800">5.68 kg</div>
+                                </div>
+                           </div>
+                           <p class="text-xs text-slate-400 mt-3">Cifra fundamental para la gestión de inventario y el cálculo preciso de costos por unidad.</p>
                         </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center border border-slate-200">
-                            <div class="bg-slate-100 text-slate-600 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.343 17.657A8 8 0 0117.657 9.343" /></svg></div>
-                            <div>
-                                <p class="text-slate-500 font-semibold">Gas (CO₂) Consumido</p>
-                                <div class="stat-number text-4xl font-bold text-slate-800">1.53 kg</div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-slate-200">
+                            <div class="flex items-center">
+                                <div class="bg-slate-200 text-slate-600 p-4 rounded-full mr-5"><svg xmlns="http://www.w.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.343 17.657A8 8 0 0117.657 9.343" /></svg></div>
+                                <div>
+                                    <p class="text-slate-500 font-semibold">Gas (CO₂) Consumido</p>
+                                    <div class="stat-number text-4xl font-bold text-slate-800">1.53 kg</div>
+                                </div>
                             </div>
+                            <p class="text-xs text-slate-400 mt-3">El gas CO₂ protege el baño de fusión de la contaminación atmosférica, asegurando una soldadura limpia.</p>
                         </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center border border-slate-200">
-                             <div class="bg-red-100 text-red-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
-                            <div>
-                                <p class="text-slate-500 font-semibold">Aporte Térmico</p>
-                                <div class="stat-number text-4xl font-bold text-slate-800">14.02 kJ/cm</div>
-                            </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-slate-200">
+                             <div class="flex items-center">
+                                 <div class="bg-red-100 text-red-700 p-4 rounded-full mr-5"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
+                                <div>
+                                    <p class="text-slate-500 font-semibold">Aporte Térmico</p>
+                                    <div class="stat-number text-4xl font-bold text-slate-800">14.02 kJ/cm</div>
+                                </div>
+                             </div>
+                             <p class="text-xs text-slate-400 mt-3">Controlar este valor es vital para no alterar las propiedades del acero en la Zona Afectada por el Calor (ZAC).</p>
                         </div>
                     </div>
                 </section>
@@ -123,6 +136,7 @@
                             <div class="bg-green-100 text-green-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
                             <h2 class="text-2xl font-bold text-slate-800">Garantía de Calidad Mecánica</h2>
                         </div>
+                        <p class="text-slate-600 mb-6 text-sm">Las siguientes gráficas detallan las propiedades certificadas del metal de soldadura depositado. Estos valores aseguran que la unión cumple con los requisitos de diseño para resistencia (Tensión) y tenacidad (Impacto), factores no negociables en estructuras sometidas a carga.</p>
                          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                              <div>
                                 <h3 class="text-lg font-bold text-center text-slate-600 mb-2">Análisis de Tensión (MPa)</h3>
@@ -151,13 +165,13 @@
                         <div class="chart-container">
                             <canvas id="consumablesChart"></canvas>
                         </div>
-                         <p class="text-slate-600 mt-6 text-sm">El **alambre de aporte constituye el 79%** del peso total de consumibles. Del total de **5.68 kg** gastados, **4.83 kg** se depositan efectivamente (eficiencia del 85%).</p>
+                         <p class="text-slate-600 mt-6 text-sm">El **alambre de aporte constituye el 79%** del peso total de consumibles. Del total de **5.68 kg** gastados, **4.83 kg** se depositan efectivamente (eficiencia del 85%), donde el fundente del alambre genera una escoria protectora.</p>
                     </div>
                 </section>
                  <section id="process">
                     <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200 h-full">
                          <div class="flex items-center mb-4">
-                            <div class="bg-indigo-100 text-indigo-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg></div>
+                            <div class="bg-indigo-100 text-indigo-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg></div>
                             <h2 class="text-2xl font-bold text-slate-800">Proceso en Dos Fases</h2>
                         </div>
                         <div class="space-y-4 mt-4">
@@ -165,14 +179,14 @@
                                <div class="bg-sky-500 text-white font-bold rounded-full h-8 w-8 flex items-center justify-center mr-4 mt-1">1</div>
                                <div>
                                    <h3 class="font-bold text-slate-700">FASE 1: Superior</h3>
-                                   <p class="text-sm text-slate-500">53 cordones intermitentes ("Paso Peregrino") para controlar el calor en la zona curva.</p>
+                                   <p class="text-sm text-slate-500">53 cordones intermitentes ("Paso Peregrino") para controlar el aporte térmico en la zona curva y minimizar la distorsión de la estructura.</p>
                                </div>
                            </div>
                             <div class="flex items-start">
                                <div class="bg-amber-500 text-white font-bold rounded-full h-8 w-8 flex items-center justify-center mr-4 mt-1">2</div>
                                <div>
                                    <h3 class="font-bold text-slate-700">FASE 2: Inferior</h3>
-                                   <p class="text-sm text-slate-500">2 cordones largos y continuos para máxima integridad estructural en la base.</p>
+                                   <p class="text-sm text-slate-500">2 cordones largos y continuos para máxima penetración e integridad estructural en la base, la zona de mayores esfuerzos de la viga.</p>
                                </div>
                            </div>
                         </div>
@@ -184,9 +198,10 @@
         <section id="projection" class="mt-8">
              <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
                 <div class="flex items-center mb-4">
-                    <div class="bg-teal-100 text-teal-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg></div>
+                    <div class="bg-teal-100 text-teal-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg></div>
                     <h2 class="text-2xl font-bold text-slate-800">Proyección de Producción a Escala</h2>
                 </div>
+                 <p class="text-slate-600 mb-6 text-sm">Esta proyección lineal es una herramienta estratégica que permite al departamento de planificación estimar con precisión los requerimientos de material y las horas-hombre necesarias para cumplir con órdenes de producción de mayor volumen, optimizando la gestión de recursos y los plazos de entrega.</p>
                 <div class="projection-chart-container">
                     <canvas id="projectionChart"></canvas>
                 </div>
