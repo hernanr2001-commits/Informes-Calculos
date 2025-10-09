@@ -17,8 +17,6 @@
         - Report Info: Tipos de soldadura -> Goal: Organizar/Explicar -> Viz/Presentation: Diagrama visual rediseñado con nuevos colores -> Interaction: Informativo -> Justification: El nuevo diseño es más claro y se alinea con la nueva identidad visual. -> Library/Method: HTML/Tailwind.
         - Report Info: Consumo Alambre vs. Gas -> Goal: Comparar -> Viz/Presentation: Gráfico de Anillo -> Interaction: Hover -> Justification: El gráfico ahora refleja la nueva proporción de consumo, más precisa. Colores actualizados. -> Library/Method: Chart.js (Canvas).
         - Report Info: Proyección de consumos -> Goal: Analizar tendencias -> Viz/Presentation: Gráfico de Líneas -> Interaction: Se actualiza en tiempo real -> Justification: Visualiza el crecimiento de requerimientos con la nueva base de cálculo. -> Library/Method: Chart.js (Canvas).
-        - Gemini Feature 1: Optimization -> Goal: Advise -> Viz/Presentation: Text generation in a card -> Interaction: Button click -> Justification: Provides expert-level, actionable advice to enhance the process, adding significant value. -> Library/Method: Gemini API.
-        - Gemini Feature 2: Executive Summary -> Goal: Summarize -> Viz/Presentation: Text generation in a card -> Interaction: Button click with dynamic data -> Justification: Converts simulation data into a shareable, professional summary, improving communication. -> Library/Method: Gemini API.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -64,21 +62,6 @@
             background: #f59e0b; /* amber-500 */
             cursor: pointer;
             border-radius: 50%;
-        }
-        .gemini-card {
-            min-height: 280px;
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #f59e0b;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -152,29 +135,6 @@
                             <dt class="text-sm font-medium text-slate-500 truncate">Alambre por Metro</dt>
                             <dd class="mt-1 text-3xl font-semibold text-sky-900" id="wire-per-meter">0.113 kg/m</dd>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-             <section id="gemini-analysis" class="mt-12">
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-sky-900">Análisis con IA Gemini</h2>
-                    <p class="text-slate-500 max-w-2xl mx-auto">Potencie su análisis con la inteligencia artificial de Google. Obtenga recomendaciones de expertos y genere resúmenes ejecutivos al instante.</p>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-white p-6 rounded-lg shadow-md border flex flex-col gemini-card">
-                        <h3 class="font-bold text-lg text-sky-800">Recomendaciones de Optimización</h3>
-                        <p class="text-sm text-slate-600 mt-2 flex-grow">Obtenga sugerencias de un experto virtual para mejorar su proceso de soldadura basándose en los parámetros actuales.</p>
-                        <div id="optimizations-loader" class="hidden flex justify-center items-center my-4"><div class="loader"></div></div>
-                        <div id="optimizations-result" class="text-sm text-slate-700 mt-4 prose prose-sm max-w-none"></div>
-                        <button id="get-optimizations" class="mt-4 w-full bg-sky-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-sky-700 transition-colors">✨ Obtener Recomendaciones</button>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md border flex flex-col gemini-card">
-                        <h3 class="font-bold text-lg text-sky-800">Resumen Ejecutivo</h3>
-                        <p class="text-sm text-slate-600 mt-2 flex-grow">Genere un párrafo conciso con los datos clave de la simulación actual, listo para ser incluido en un informe o presentación.</p>
-                        <div id="summary-loader" class="hidden flex justify-center items-center my-4"><div class="loader"></div></div>
-                        <div id="summary-result" class="text-sm text-slate-700 mt-4 prose prose-sm max-w-none"></div>
-                        <button id="get-summary" class="mt-4 w-full bg-amber-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-600 transition-colors">✨ Generar Resumen</button>
                     </div>
                 </div>
             </section>
@@ -258,12 +218,50 @@
                     </ul>
                 </div>
             </section>
+
+            <section id="suggestions" class="mt-12">
+                <div class="text-center mb-8">
+                   <h2 class="text-2xl font-bold text-sky-900">Sugerencias del Experto</h2>
+                   <p class="text-slate-500">Recomendaciones para mejorar la calidad y eficiencia del proceso.</p>
+               </div>
+               <div class="bg-white p-6 rounded-lg shadow-md border border-teal-200">
+                    <ul role="list" class="space-y-4 text-slate-700">
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <span class="text-teal-500 font-bold text-xl">1.</span>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-semibold text-sky-900">Control del Stick-Out (Extremo Libre del Electrodo)</h4>
+                                <p class="text-sm mt-1">Para el alambre Dual Shield 7100 de 1.2mm, mantener un stick-out constante de 15-20 mm es crucial. Un stick-out más largo puede aumentar la tasa de deposición pero también la inestabilidad del arco y las salpicaduras. Utilizar guías en las torchas puede ayudar a los operarios a mantener esta distancia de forma consistente, mejorando la calidad del cordón final.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <span class="text-teal-500 font-bold text-xl">2.</span>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-semibold text-sky-900">Optimización del Gas de Protección</h4>
+                                <p class="text-sm mt-1">Aunque el CO₂ al 100% es económico y ofrece buena penetración, genera más salpicaduras. Para piezas con requisitos estéticos elevados, considere probar una mezcla de Argón/CO₂ (ej. 80/20). Esto producirá un arco más suave, menos salpicaduras y reducirá el tiempo de limpieza post-soldadura, lo que podría compensar el mayor costo del gas.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <span class="text-teal-500 font-bold text-xl">3.</span>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-semibold text-sky-900">Mantenimiento Preventivo de Consumibles</h4>
+                                <p class="text-sm mt-1">Establecer un programa de reemplazo preventivo para las puntas de contacto y los difusores de gas. Un desgaste excesivo en estos componentes causa un contacto eléctrico deficiente y un flujo de gas turbulento, afectando directamente la calidad de la soldadura. Reemplazarlos antes de que fallen mejora la consistencia y reduce paradas no planificadas.</p>
+                            </div>
+                        </li>
+                    </ul>
+               </div>
+           </section>
         </div>
     </main>
     
     <footer class="bg-sky-900 mt-12">
          <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-sm text-sky-200">
-             <p>&copy; 2025 Fábrica Marcelini | Reporte Interactivo Potenciado por Gemini</p>
+             <p>&copy; 2025 Fábrica Marcelini | Reporte Interactivo</p>
          </div>
     </footer>
 
@@ -284,90 +282,8 @@
             const wireDisplay = document.getElementById('total-wire');
             const gasDisplay = document.getElementById('total-gas');
             const wirePerMeterDisplay = document.getElementById('wire-per-meter');
-            
-            const getOptimizationsBtn = document.getElementById('get-optimizations');
-            const optimizationsResultEl = document.getElementById('optimizations-result');
-            const optimizationsLoaderEl = document.getElementById('optimizations-loader');
-
-            const getSummaryBtn = document.getElementById('get-summary');
-            const summaryResultEl = document.getElementById('summary-result');
-            const summaryLoaderEl = document.getElementById('summary-loader');
 
             let consumablesChart, projectionChart;
-
-            async function callGeminiAPI(prompt, resultElement, loadingElement) {
-                loadingElement.classList.remove('hidden');
-                resultElement.classList.add('hidden');
-                resultElement.innerHTML = '';
-
-                const apiKey = ""; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-                const payload = {
-                    contents: [{ parts: [{ text: prompt }] }],
-                };
-
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`API request failed with status ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-                    
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        let text = candidate.content.parts[0].text;
-                        text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-sky-800">$1</strong>');
-                        text = text.replace(/^\* (.*$)/gm, '<li class="mb-2 pl-4 relative"><span class="absolute left-0 top-1.5 w-1.5 h-1.5 bg-amber-500 rounded-full"></span>$1</li>');
-                        text = text.replace(/(<li.*<\/li>)/gs, '<ul class="mt-2">$1</ul>');
-                        text = text.replace(/\n/g, '<br>');
-                        resultElement.innerHTML = text;
-                    } else {
-                        resultElement.textContent = 'No se pudo obtener una respuesta válida de la API.';
-                    }
-
-                } catch (error) {
-                    console.error('Error calling Gemini API:', error);
-                    resultElement.textContent = 'Error al contactar el servicio de IA. Por favor, intente de nuevo.';
-                } finally {
-                    loadingElement.classList.add('hidden');
-                    resultElement.classList.remove('hidden');
-                }
-            }
-            
-            getOptimizationsBtn.addEventListener('click', () => {
-                const prompt = `Como ingeniero experto en soldadura de ESAB, analiza los siguientes parámetros para un proceso FCAW-G en una viga estructural de acero:
-                - Alambre: ESAB Dual Shield 7100 (1.2 mm)
-                - Gas: 100% CO₂ a 15 L/min
-                - Parámetros: 33.5 Voltios / 300 Amperes
-                - Velocidad: 45.45 cm/min
-                
-                Proporciona 3 recomendaciones específicas y accionables para optimizar el proceso, enfocándote en reducir salpicaduras, mejorar la apariencia del cordón o aumentar la eficiencia. Justifica brevemente cada recomendación. Usa un formato de lista con asteriscos y resalta los conceptos clave con doble asterisco.`;
-                callGeminiAPI(prompt, optimizationsResultEl, optimizationsLoaderEl);
-            });
-
-            getSummaryBtn.addEventListener('click', () => {
-                const beamCount = input.value;
-                const totalTimeText = timeDisplay.textContent;
-                const totalWireText = wireDisplay.textContent;
-                const totalGasText = gasDisplay.textContent;
-
-                const prompt = `Como gerente de producción, redacta un resumen ejecutivo de una sola párrafo para una reunión de planificación. Utiliza los siguientes datos de una simulación de soldadura:
-                - Cantidad de Vigas a Producir: ${beamCount}
-                - Tiempo Total de Producción Estimado: ${totalTimeText}
-                - Consumo Total de Alambre: ${totalWireText}
-                - Consumo Total de Gas (CO₂): ${totalGasText}
-                
-                El resumen debe ser claro, conciso y resaltar los requerimientos clave de recursos y tiempo para el proyecto.`;
-                callGeminiAPI(prompt, summaryResultEl, summaryLoaderEl);
-            });
-
 
             function formatTime(totalMinutes) {
                 if (totalMinutes < 60) {
