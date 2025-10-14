@@ -195,6 +195,12 @@
                              <div class="flex justify-between text-sm"><span>Lado Inferior (Continuo):</span><span id="resultGasContinuous">--</span></div>
                              <div class="flex justify-between text-lg font-bold mt-2 pt-2 border-t border-slate-600"><span>Consumo Total Gas:</span><span id="resultGasTotal">--</span></div>
                         </div>
+                        <!-- Consumo por Metro -->
+                        <div class="result-group">
+                             <p class="text-base font-semibold text-slate-300 mb-2">Rendimiento por Metro Lineal</p>
+                             <div class="flex justify-between text-sm"><span>Alambre:</span><span id="resultWirePerMeter">--</span></div>
+                             <div class="flex justify-between text-sm"><span>Gas (CO₂):</span><span id="resultGasPerMeter">--</span></div>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
@@ -261,6 +267,20 @@
                 const gasContinuousKg = gasContinuousLiters * gasDensityCO2;
                 const totalGasKg = totalGasLiters * gasDensityCO2;
 
+                // 4. Consumo por metro
+                const totalWeldLengthCm = totalLengthPeregrino1 + totalLengthPeregrino2 + continuousLength1 + continuousLength2;
+                const totalWeldLengthM = totalWeldLengthCm / 100;
+
+                let wirePerMeterKg = 0;
+                let gasPerMeterLiters = 0;
+                let gasPerMeterKg = 0;
+
+                if (totalWeldLengthM > 0) {
+                    wirePerMeterKg = totalWireKg / totalWeldLengthM;
+                    gasPerMeterLiters = totalGasLiters / totalWeldLengthM;
+                    gasPerMeterKg = totalGasKg / totalWeldLengthM;
+                }
+
                 // --- Mostrar resultados de Tiempo ---
                 document.getElementById('resultTimePeregrino').textContent = `${timePeregrino.toFixed(2)} min`;
                 document.getElementById('resultTimeContinuous').textContent = `${timeContinuous.toFixed(2)} min`;
@@ -275,6 +295,10 @@
                 document.getElementById('resultGasPeregrino').textContent = `${gasPeregrinoKg.toFixed(2)} kg (${gasPeregrinoLiters.toFixed(0)} L)`;
                 document.getElementById('resultGasContinuous').textContent = `${gasContinuousKg.toFixed(2)} kg (${gasContinuousLiters.toFixed(0)} L)`;
                 document.getElementById('resultGasTotal').textContent = `${totalGasKg.toFixed(2)} kg (${totalGasLiters.toFixed(0)} L)`;
+                
+                // --- Mostrar resultados por metro ---
+                document.getElementById('resultWirePerMeter').textContent = `${wirePerMeterKg.toFixed(3)} kg/m`;
+                document.getElementById('resultGasPerMeter').textContent = `${gasPerMeterKg.toFixed(3)} kg/m (${gasPerMeterLiters.toFixed(2)} L/m)`;
 
             };
             
@@ -295,7 +319,8 @@
                 const resultFields = [
                     'resultTimePeregrino', 'resultTimeContinuous', 'resultTimeTotal',
                     'resultWirePeregrino', 'resultWireContinuous', 'resultWireTotal',
-                    'resultGasPeregrino', 'resultGasContinuous', 'resultGasTotal'
+                    'resultGasPeregrino', 'resultGasContinuous', 'resultGasTotal',
+                    'resultWirePerMeter', 'resultGasPerMeter'
                 ];
                 resultFields.forEach(id => document.getElementById(id).textContent = "--");
                 
@@ -312,3 +337,5 @@
     </script>
 </body>
 </html>
+
+
