@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Soldadura - Marcelini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #facc15; /* yellow-400 */
+            --dark-bg: #1e293b; /* slate-800 */
+            --medium-bg: #334155; /* slate-700 */
+            --light-bg: #475569; /* slate-600 */
+            --text-light: #f1f5f9; /* slate-100 */
+            --text-dark: #1e293b; /* slate-800 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+        }
+        .industrial-font {
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .card {
+            background-color: rgba(15, 23, 42, 0.5); /* slate-900/50 */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .form-input {
+            background-color: var(--medium-bg);
+            border: 1px solid var(--light-bg);
+            border-radius: 0.375rem;
+            color: var(--text-light);
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.3);
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+        }
+        .btn-primary:hover {
+            background-color: #eab308; /* yellow-500 */
+        }
+        .btn-secondary {
+            background-color: var(--light-bg);
+            color: var(--text-light);
+        }
+        .btn-secondary:hover {
+            background-color: #64748b; /* slate-500 */
+        }
+        .result-card {
+            background: linear-gradient(145deg, #334155, #1e293b);
+            border-left: 4px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+    <div class="container mx-auto max-w-6xl">
+        <header class="text-center mb-8">
+            <h1 class="industrial-font text-3xl sm:text-4xl md:text-5xl font-black text-yellow-400">CALCULADORA DE SOLDADURA</h1>
+            <h2 class="mt-2 text-xl sm:text-2xl font-bold text-slate-200">Análisis de Proceso para Vigas de Carretón (Marcelini)</h2>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Columna de Entradas -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Parámetros del Proceso -->
+                <div class="card">
+                    <h3 class="text-xl font-bold text-yellow-400 border-b border-slate-600 pb-3 mb-4">Parámetros del Proceso</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="amperage" class="block text-sm font-medium text-slate-300 mb-1">Amperaje (A)</label>
+                            <input type="number" id="amperage" value="300" class="form-input">
+                        </div>
+                        <div>
+                            <label for="voltage" class="block text-sm font-medium text-slate-300 mb-1">Voltaje (V)</label>
+                            <input type="number" id="voltage" value="33.5" step="0.1" class="form-input">
+                        </div>
+                        <div>
+                            <label for="travelSpeed" class="block text-sm font-medium text-slate-300 mb-1">Velocidad Avance (cm/min)</label>
+                            <input type="number" id="travelSpeed" value="43" class="form-input">
+                        </div>
+                        <div>
+                            <label for="depositionRate" class="block text-sm font-medium text-slate-300 mb-1">Tasa Deposición (kg/h)</label>
+                            <input type="number" id="depositionRate" value="5.1" step="0.1" class="form-input">
+                        </div>
+                         <div>
+                            <label for="gasFlow" class="block text-sm font-medium text-slate-300 mb-1">Caudal Gas (L/min)</label>
+                            <input type="number" id="gasFlow" value="15" class="form-input">
+                        </div>
+                         <div>
+                            <label for="torches" class="block text-sm font-medium text-slate-300 mb-1">Nº de Torchas</label>
+                            <input type="number" id="torches" value="2" class="form-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geometría de la Viga -->
+                <div class="card">
+                    <h3 class="text-xl font-bold text-yellow-400 border-b border-slate-600 pb-3 mb-4">Geometría de la Soldadura por Viga</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Cordón Peregrino -->
+                        <div>
+                            <h4 class="font-semibold text-lg text-slate-200 mb-3">Lado Superior (Peregrino)</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label for="peregrinoWelds1" class="block text-sm font-medium text-slate-300 mb-1">Nº cordones (Lado 1)</label>
+                                    <input type="number" id="peregrinoWelds1" value="27" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="peregrinoWelds2" class="block text-sm font-medium text-slate-300 mb-1">Nº cordones (Lado 2)</label>
+                                    <input type="number" id="peregrinoWelds2" value="26" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="peregrinoLength" class="block text-sm font-medium text-slate-300 mb-1">Largo por cordón (cm)</label>
+                                    <input type="number" id="peregrinoLength" value="13.5" step="0.1" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cordón Continuo -->
+                        <div>
+                             <h4 class="font-semibold text-lg text-slate-200 mb-3">Lado Inferior (Continuo)</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label for="continuousLength1" class="block text-sm font-medium text-slate-300 mb-1">Largo cordón 1 (cm)</label>
+                                    <input type="number" id="continuousLength1" value="820" class="form-input">
+                                </div>
+                                <div>
+                                    <label for="continuousLength2" class="block text-sm font-medium text-slate-300 mb-1">Largo cordón 2 (cm)</label>
+                                    <input type="number" id="continuousLength2" value="815" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="flex justify-center gap-4">
+                    <button id="calculateBtn" class="btn btn-primary">Calcular Resultados</button>
+                    <button id="resetBtn" class="btn btn-secondary">Reiniciar Valores</button>
+                </div>
+            </div>
+
+            <!-- Columna de Resultados -->
+            <div class="space-y-6">
+                <div class="card result-card">
+                    <h3 class="text-xl font-bold text-yellow-400 mb-4">Resultados por Viga</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm text-slate-400">Tiempo de Arco Total</p>
+                            <p id="resultTime" class="text-3xl font-bold text-white">--</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400">Consumo de Alambre Total</p>
+                            <p id="resultWire" class="text-3xl font-bold text-white">--</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400">Consumo de Gas (CO₂)</p>
+                            <p id="resultGas" class="text-3xl font-bold text-white">--</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-bold text-yellow-400 border-b border-slate-600 pb-3 mb-4">Análisis del Experto</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        El proceso FCAW-G con alambre **ESAB Dual Shield 7100** es altamente productivo para esta aplicación. Los parámetros de 300A y 33.5V aseguran una alta tasa de deposición y una excelente penetración, ideal para estructuras de alta exigencia.
+                        <br><br>
+                        Se recomienda mantener un caudal de gas estable y proteger la zona de soldadura de corrientes de aire para evitar porosidad. La velocidad de avance es crítica para mantener la garganta de soldadura deseada (aprox. 5mm). Cualquier cambio en los parámetros afectará directamente los consumos y tiempos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
+
+            const calculateResults = () => {
+                // --- Obtener valores de los inputs ---
+                const travelSpeed = getVal('travelSpeed'); // cm/min
+                const depositionRate = getVal('depositionRate'); // kg/h
+                const gasFlow = getVal('gasFlow'); // L/min por torcha
+                const torches = getVal('torches');
+
+                // Geometría superior (peregrino)
+                const peregrinoWelds1 = getVal('peregrinoWelds1');
+                const peregrinoWelds2 = getVal('peregrinoWelds2');
+                const peregrinoLength = getVal('peregrinoLength'); // cm
+                
+                // Geometría inferior (continuo)
+                const continuousLength1 = getVal('continuousLength1'); // cm
+                const continuousLength2 = getVal('continuousLength2'); // cm
+
+                if (travelSpeed === 0) {
+                    alert("La velocidad de avance no puede ser cero.");
+                    return;
+                }
+
+                // --- Cálculos ---
+
+                // 1. Longitudes de soldadura
+                const totalLengthPeregrino1 = peregrinoWelds1 * peregrinoLength; // cm
+                const totalLengthPeregrino2 = peregrinoWelds2 * peregrinoLength; // cm
+                // El tiempo lo define el lado más largo, ya que son simultáneas
+                const maxPeregrinoLength = Math.max(totalLengthPeregrino1, totalLengthPeregrino2); // cm
+                const maxContinuousLength = Math.max(continuousLength1, continuousLength2); // cm
+
+                // 2. Tiempos de soldadura (tiempo de arco)
+                const timePeregrino = maxPeregrinoLength / travelSpeed; // minutos
+                const timeContinuous = maxContinuousLength / travelSpeed; // minutos
+                const totalArcTimeMinutes = timePeregrino + timeContinuous; // minutos
+                const totalArcTimeHours = totalArcTimeMinutes / 60; // horas
+
+                // 3. Consumo de alambre
+                // Tasa de deposición por hora * tiempo total de arco en horas * número de torchas
+                const totalWireKg = depositionRate * totalArcTimeHours * torches;
+
+                // 4. Consumo de gas
+                const gasDensityCO2 = 1.98 / 1000; // kg por litro
+                // Caudal por torcha * número de torchas * tiempo total de arco en minutos
+                const totalGasLiters = gasFlow * torches * totalArcTimeMinutes;
+                const totalGasKg = totalGasLiters * gasDensityCO2;
+
+                // --- Mostrar resultados ---
+                document.getElementById('resultTime').textContent = `${totalArcTimeMinutes.toFixed(2)} minutos`;
+                document.getElementById('resultWire').textContent = `${totalWireKg.toFixed(2)} kg`;
+                document.getElementById('resultGas').textContent = `${totalGasKg.toFixed(2)} kg (${totalGasLiters.toFixed(0)} L)`;
+            };
+            
+            const resetValues = () => {
+                document.getElementById('amperage').value = "300";
+                document.getElementById('voltage').value = "33.5";
+                document.getElementById('travelSpeed').value = "43";
+                document.getElementById('depositionRate').value = "5.1";
+                document.getElementById('gasFlow').value = "15";
+                document.getElementById('torches').value = "2";
+                document.getElementById('peregrinoWelds1').value = "27";
+                document.getElementById('peregrinoWelds2').value = "26";
+                document.getElementById('peregrinoLength').value = "13.5";
+                document.getElementById('continuousLength1').value = "820";
+                document.getElementById('continuousLength2').value = "815";
+
+                document.getElementById('resultTime').textContent = "--";
+                document.getElementById('resultWire').textContent = "--";
+                document.getElementById('resultGas').textContent = "--";
+            };
+
+            // --- Event Listeners ---
+            document.getElementById('calculateBtn').addEventListener('click', calculateResults);
+            document.getElementById('resetBtn').addEventListener('click', resetValues);
+
+            // Calcular al cargar la página con los valores iniciales
+            calculateResults();
+        });
+    </script>
+</body>
+</html>
