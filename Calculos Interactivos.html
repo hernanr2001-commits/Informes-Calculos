@@ -11,7 +11,7 @@
     <style>
         :root {
             --primary-color: #facc15; /* yellow-400 */
-            --dark-bg: #1e293b; /* slate-800 */
+            --dark-bg: #1e2b3b; /* slate-800 */
             --medium-bg: #334155; /* slate-700 */
             --light-bg: #475569; /* slate-600 */
             --text-light: #f1f5f9; /* slate-100 */
@@ -71,6 +71,16 @@
         .result-card {
             background: linear-gradient(145deg, #334155, #1e293b);
             border-left: 4px solid var(--primary-color);
+        }
+        .result-group {
+            border-bottom: 1px solid var(--light-bg);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
     </style>
 </head>
@@ -164,17 +174,26 @@
                 <div class="card result-card">
                     <h3 class="text-xl font-bold text-yellow-400 mb-4">Resultados por Viga</h3>
                     <div class="space-y-4">
-                        <div>
-                            <p class="text-sm text-slate-400">Tiempo de Arco Total</p>
-                            <p id="resultTime" class="text-3xl font-bold text-white">--</p>
+                        <!-- Tiempos -->
+                        <div class="result-group">
+                            <p class="text-base font-semibold text-slate-300 mb-2">Tiempos de Soldadura</p>
+                            <div class="flex justify-between text-sm"><span>Lado Superior (Peregrino):</span><span id="resultTimePeregrino">--</span></div>
+                            <div class="flex justify-between text-sm"><span>Lado Inferior (Continuo):</span><span id="resultTimeContinuous">--</span></div>
+                            <div class="flex justify-between text-lg font-bold mt-2 pt-2 border-t border-slate-600"><span>Tiempo de Arco Total:</span><span id="resultTimeTotal">--</span></div>
                         </div>
-                        <div>
-                            <p class="text-sm text-slate-400">Consumo de Alambre Total</p>
-                            <p id="resultWire" class="text-3xl font-bold text-white">--</p>
+                        <!-- Consumo Alambre -->
+                        <div class="result-group">
+                            <p class="text-base font-semibold text-slate-300 mb-2">Consumo de Alambre</p>
+                             <div class="flex justify-between text-sm"><span>Lado Superior (Peregrino):</span><span id="resultWirePeregrino">--</span></div>
+                            <div class="flex justify-between text-sm"><span>Lado Inferior (Continuo):</span><span id="resultWireContinuous">--</span></div>
+                            <div class="flex justify-between text-lg font-bold mt-2 pt-2 border-t border-slate-600"><span>Consumo Total Alambre:</span><span id="resultWireTotal">--</span></div>
                         </div>
-                        <div>
-                            <p class="text-sm text-slate-400">Consumo de Gas (CO₂)</p>
-                            <p id="resultGas" class="text-3xl font-bold text-white">--</p>
+                        <!-- Consumo Gas -->
+                        <div class="result-group">
+                             <p class="text-base font-semibold text-slate-300 mb-2">Consumo de Gas (CO₂)</p>
+                             <div class="flex justify-between text-sm"><span>Lado Superior (Peregrino):</span><span id="resultGasPeregrino">--</span></div>
+                             <div class="flex justify-between text-sm"><span>Lado Inferior (Continuo):</span><span id="resultGasContinuous">--</span></div>
+                             <div class="flex justify-between text-lg font-bold mt-2 pt-2 border-t border-slate-600"><span>Consumo Total Gas:</span><span id="resultGasTotal">--</span></div>
                         </div>
                     </div>
                 </div>
@@ -216,34 +235,47 @@
                 }
 
                 // --- Cálculos ---
+                const gasDensityCO2 = 1.98 / 1000; // kg por litro
 
-                // 1. Longitudes de soldadura
-                const totalLengthPeregrino1 = peregrinoWelds1 * peregrinoLength; // cm
-                const totalLengthPeregrino2 = peregrinoWelds2 * peregrinoLength; // cm
-                // El tiempo lo define el lado más largo, ya que son simultáneas
-                const maxPeregrinoLength = Math.max(totalLengthPeregrino1, totalLengthPeregrino2); // cm
-                const maxContinuousLength = Math.max(continuousLength1, continuousLength2); // cm
+                // 1. Longitudes y Tiempos
+                const totalLengthPeregrino1 = peregrinoWelds1 * peregrinoLength;
+                const totalLengthPeregrino2 = peregrinoWelds2 * peregrinoLength;
+                const maxPeregrinoLength = Math.max(totalLengthPeregrino1, totalLengthPeregrino2);
+                const maxContinuousLength = Math.max(continuousLength1, continuousLength2);
 
-                // 2. Tiempos de soldadura (tiempo de arco)
                 const timePeregrino = maxPeregrinoLength / travelSpeed; // minutos
                 const timeContinuous = maxContinuousLength / travelSpeed; // minutos
-                const totalArcTimeMinutes = timePeregrino + timeContinuous; // minutos
-                const totalArcTimeHours = totalArcTimeMinutes / 60; // horas
+                const totalArcTimeMinutes = timePeregrino + timeContinuous;
 
-                // 3. Consumo de alambre
-                // Tasa de deposición por hora * tiempo total de arco en horas * número de torchas
-                const totalWireKg = depositionRate * totalArcTimeHours * torches;
+                // 2. Consumo de Alambre
+                const wirePeregrinoKg = depositionRate * (timePeregrino / 60) * torches;
+                const wireContinuousKg = depositionRate * (timeContinuous / 60) * torches;
+                const totalWireKg = wirePeregrinoKg + wireContinuousKg;
 
-                // 4. Consumo de gas
-                const gasDensityCO2 = 1.98 / 1000; // kg por litro
-                // Caudal por torcha * número de torchas * tiempo total de arco en minutos
-                const totalGasLiters = gasFlow * torches * totalArcTimeMinutes;
+                // 3. Consumo de Gas
+                const gasPeregrinoLiters = gasFlow * torches * timePeregrino;
+                const gasContinuousLiters = gasFlow * torches * timeContinuous;
+                const totalGasLiters = gasPeregrinoLiters + gasContinuousLiters;
+                
+                const gasPeregrinoKg = gasPeregrinoLiters * gasDensityCO2;
+                const gasContinuousKg = gasContinuousLiters * gasDensityCO2;
                 const totalGasKg = totalGasLiters * gasDensityCO2;
 
-                // --- Mostrar resultados ---
-                document.getElementById('resultTime').textContent = `${totalArcTimeMinutes.toFixed(2)} minutos`;
-                document.getElementById('resultWire').textContent = `${totalWireKg.toFixed(2)} kg`;
-                document.getElementById('resultGas').textContent = `${totalGasKg.toFixed(2)} kg (${totalGasLiters.toFixed(0)} L)`;
+                // --- Mostrar resultados de Tiempo ---
+                document.getElementById('resultTimePeregrino').textContent = `${timePeregrino.toFixed(2)} min`;
+                document.getElementById('resultTimeContinuous').textContent = `${timeContinuous.toFixed(2)} min`;
+                document.getElementById('resultTimeTotal').textContent = `${totalArcTimeMinutes.toFixed(2)} min`;
+
+                // --- Mostrar resultados de Alambre ---
+                document.getElementById('resultWirePeregrino').textContent = `${wirePeregrinoKg.toFixed(2)} kg`;
+                document.getElementById('resultWireContinuous').textContent = `${wireContinuousKg.toFixed(2)} kg`;
+                document.getElementById('resultWireTotal').textContent = `${totalWireKg.toFixed(2)} kg`;
+
+                // --- Mostrar resultados de Gas ---
+                document.getElementById('resultGasPeregrino').textContent = `${gasPeregrinoKg.toFixed(2)} kg (${gasPeregrinoLiters.toFixed(0)} L)`;
+                document.getElementById('resultGasContinuous').textContent = `${gasContinuousKg.toFixed(2)} kg (${gasContinuousLiters.toFixed(0)} L)`;
+                document.getElementById('resultGasTotal').textContent = `${totalGasKg.toFixed(2)} kg (${totalGasLiters.toFixed(0)} L)`;
+
             };
             
             const resetValues = () => {
@@ -259,9 +291,15 @@
                 document.getElementById('continuousLength1').value = "820";
                 document.getElementById('continuousLength2').value = "815";
 
-                document.getElementById('resultTime').textContent = "--";
-                document.getElementById('resultWire').textContent = "--";
-                document.getElementById('resultGas').textContent = "--";
+                // Resetear todos los campos de resultado
+                const resultFields = [
+                    'resultTimePeregrino', 'resultTimeContinuous', 'resultTimeTotal',
+                    'resultWirePeregrino', 'resultWireContinuous', 'resultWireTotal',
+                    'resultGasPeregrino', 'resultGasContinuous', 'resultGasTotal'
+                ];
+                resultFields.forEach(id => document.getElementById(id).textContent = "--");
+                
+                calculateResults(); // Recalcular con valores por defecto
             };
 
             // --- Event Listeners ---
