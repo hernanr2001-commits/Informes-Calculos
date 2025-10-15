@@ -1,323 +1,399 @@
+¡Excelente idea\! Invertir el diseño para priorizar los resultados es un enfoque muy efectivo para un dashboard.
+
+Aquí tienes el código HTML rediseñado. En esta versión, los parámetros de entrada y la descripción del proceso se ubican en una barra lateral a la izquierda, mientras que todos los resultados visuales (KPIs, gráficos y proyecciones) ocupan el área principal y más grande de la pantalla, captando la atención de inmediato.
+
+### **Puntos Clave del Nuevo Diseño:**
+
+  * **Barra Lateral (Inputs):** La columna izquierda ahora es más estrecha y contiene la tabla de "Parámetros de Configuración" y la sección "Proceso en Dos Fases". Actúa como el centro de datos de entrada.
+  * **Área Principal (Resultados):** La columna derecha es más ancha y muestra de forma prominente los KPIs, la proyección de producción y los gráficos de calidad y consumibles. Todo lo importante está a primera vista.
+  * **Jerarquía Visual:** Este diseño crea una jerarquía clara. El usuario primero ve los resultados clave y, si necesita los detalles de la configuración, puede consultarlos en la barra lateral sin que estorben.
+
+-----
+
+### **Código HTML con el Diseño Invertido**
+
+```html
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Soldadura</title>
+    <title>Dashboard Técnico: Proceso de Soldadura FCAW | Fábrica Marcelini</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #facc15; /* yellow-400 */
-            --dark-bg: #1e2b3b; /* slate-800 */
-            --medium-bg: #334155; /* slate-700 */
-            --light-bg: #475569; /* slate-600 */
-            --text-light: #f1f5f9; /* slate-100 */
-            --text-dark: #1e293b; /* slate-800 */
-        }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
+            font-family: 'Lato', sans-serif;
+            background-color: #f1f5f9;
         }
-        .industrial-font {
-            font-family: 'Arial Black', 'Impact', sans-serif;
-            letter-spacing: 0.05em;
+        h1, h2, h3, .stat-number {
+            font-family: 'Roboto Condensed', sans-serif;
         }
-        .card {
-            background-color: rgba(15, 23, 42, 0.5); /* slate-900/50 */
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-        .form-input {
-            background-color: var(--medium-bg);
-            border: 1px solid var(--light-bg);
-            border-radius: 0.375rem;
-            color: var(--text-light);
-            padding: 0.5rem 0.75rem;
+        .chart-container {
+            position: relative;
             width: 100%;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 320px;
         }
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.3);
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            border: none;
-        }
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: var(--text-dark);
-        }
-        .btn-primary:hover {
-            background-color: #eab308; /* yellow-500 */
-        }
-        .btn-secondary {
-            background-color: var(--light-bg);
-            color: var(--text-light);
-        }
-        .btn-secondary:hover {
-            background-color: #64748b; /* slate-500 */
-        }
-        .result-card {
-            background: linear-gradient(145deg, #334155, #1e293b);
-            border-left: 4px solid var(--primary-color);
-        }
-        .result-group {
-            border-bottom: 1px solid var(--light-bg);
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-        }
-        .result-group:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
+        .projection-chart-container {
+            position: relative;
+            height: 350px;
+            max-height: 400px;
+            width: 100%;
         }
     </style>
 </head>
-<body class="p-4 sm:p-6 md:p-8">
-    <div class="container mx-auto max-w-6xl">
-        <header class="text-center mb-8">
-            <h1 class="industrial-font text-3xl sm:text-4xl md:text-5xl font-black text-yellow-400">CALCULADORA DE SOLDADURA</h1>
-            <h2 class="mt-2 text-xl sm:text-2xl font-bold text-slate-200">Análisis de Proceso para Vigas Estructurales</h2>
-        </header>
+<body class="bg-slate-100 text-slate-800">
 
-        <form id="weldingCalculatorForm">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Columna de Entradas -->
-                <div class="lg:col-span-2 space-y-6">
-                    <!-- Parámetros del Proceso -->
-                    <div class="card">
-                        <h3 class="text-xl font-bold text-yellow-400 border-b border-slate-600 pb-3 mb-4">Parámetros del Proceso</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            <div>
-                                <label for="amperage" class="block text-sm font-medium text-slate-300 mb-1">Amperaje (A)</label>
-                                <input type="number" id="amperage" value="300" class="form-input">
+    <header class="bg-[#022c43] text-white text-center py-10 px-4 shadow-xl">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight">DASHBOARD TÉCNICO DE SOLDADURA</h1>
+        <p class="mt-4 text-lg text-[#ffd700]">Análisis de Proceso para la Fabricación de Vigas de Carretón | Fábrica Marcelini</p>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+            <aside class="lg:col-span-1 flex flex-col gap-8">
+                <section id="input-data">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200 h-full">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-sky-100 text-sky-700 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4v6m0-6a2 2 0 110-4m0 6a2 2 0 100 4m0 6v-2m0-2a2 2 0 100 4m0-4a2 2 0 110-4m-6-4v2m0-2a2 2 0 100 4V8m0 0a2 2 0 110-4m0 4a2 2 0 100 4m0 6v-2m6-4v2m0-2a2 2 0 100 4v-2m0-2a2 2 0 110-4m0 4a2 2 0 100 4m0 6v-2" /></svg>
                             </div>
-                            <div>
-                                <label for="voltage" class="block text-sm font-medium text-slate-300 mb-1">Voltaje (V)</label>
-                                <input type="number" id="voltage" value="33.5" step="0.1" class="form-input">
-                            </div>
-                            <div>
-                                <label for="travelSpeed" class="block text-sm font-medium text-slate-300 mb-1">Velocidad Avance (cm/min)</label>
-                                <input type="number" id="travelSpeed" value="43" class="form-input">
-                            </div>
-                            <div>
-                                <label for="depositionRate" class="block text-sm font-medium text-slate-300 mb-1">Tasa Deposición (kg/h)</label>
-                                <input type="number" id="depositionRate" value="5.1" step="0.1" class="form-input">
-                            </div>
-                             <div>
-                                <label for="gasFlow" class="block text-sm font-medium text-slate-300 mb-1">Caudal Gas (L/min)</label>
-                                <input type="number" id="gasFlow" value="15" class="form-input">
-                            </div>
-                             <div>
-                                <label for="torches" class="block text-sm font-medium text-slate-300 mb-1">Nº de Torchas</label>
-                                <input type="number" id="torches" value="2" class="form-input">
-                            </div>
+                            <h2 class="text-2xl font-bold text-slate-800">Parámetros</h2>
+                        </div>
+                        <p class="text-slate-600 mb-6 text-sm">Base de cálculo para todos los resultados del dashboard.</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left min-w-[250px]">
+                                <thead class="border-b-2 border-slate-200">
+                                    <tr>
+                                        <th class="py-3 px-2 text-sm font-bold text-slate-500 uppercase">Parámetro</th>
+                                        <th class="py-3 px-2 text-sm font-bold text-slate-500 uppercase">Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="py-3 px-2 font-semibold text-slate-700 text-sm">Consumible</td>
+                                        <td class="py-3 px-2 text-slate-600 text-sm">ESAB DS 7100</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="py-3 px-2 font-semibold text-slate-700 text-sm">Eléctricos</td>
+                                        <td class="py-3 px-2 text-slate-600 text-sm">33.5V / 300A</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="py-3 px-2 font-semibold text-slate-700 text-sm">Velocidad</td>
+                                        <td class="py-3 px-2 text-slate-600 text-sm">43 cm/min</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="py-3 px-2 font-semibold text-slate-700 text-sm">Deposición</td>
+                                        <td class="py-3 px-2 text-slate-600 text-sm">5.3 kg/h</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
-                    <!-- Geometría de la Viga -->
-                    <div class="card">
-                        <h3 class="text-xl font-bold text-yellow-400 border-b border-slate-600 pb-3 mb-4">Geometría de la Soldadura por Viga</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Cordón Peregrino -->
-                            <div>
-                                <h4 class="font-semibold text-lg text-slate-200 mb-3">Lado Superior (Peregrino)</h4>
-                                <div class="space-y-3">
-                                    <div>
-                                        <label for="peregrinoWelds1" class="block text-sm font-medium text-slate-300 mb-1">Nº cordones (Lado 1)</label>
-                                        <input type="number" id="peregrinoWelds1" value="27" class="form-input">
-                                    </div>
-                                    <div>
-                                        <label for="peregrinoWelds2" class="block text-sm font-medium text-slate-300 mb-1">Nº cordones (Lado 2)</label>
-                                        <input type="number" id="peregrinoWelds2" value="26" class="form-input">
-                                    </div>
-                                    <div>
-                                        <label for="peregrinoLength" class="block text-sm font-medium text-slate-300 mb-1">Largo por cordón (cm)</label>
-                                        <input type="number" id="peregrinoLength" value="13.5" step="0.1" class="form-input">
-                                    </div>
+                </section>
+                
+                <section id="process">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200 h-full">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-indigo-100 text-indigo-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" /></svg></div>
+                            <h2 class="text-2xl font-bold text-slate-800">Proceso</h2>
+                        </div>
+                        <div class="space-y-4 mt-4">
+                            <div class="flex items-start">
+                                <div class="bg-sky-500 text-white font-bold rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center mr-4 mt-1">1</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-700">FASE 1: Superior</h3>
+                                    <p class="text-sm text-slate-500">53 cordones intermitentes ("Paso Peregrino") para control de aporte térmico.</p>
                                 </div>
                             </div>
-                            <!-- Cordón Continuo -->
-                            <div>
-                                 <h4 class="font-semibold text-lg text-slate-200 mb-3">Lado Inferior (Continuo)</h4>
-                                <div class="space-y-3">
-                                    <div>
-                                        <label for="continuousLength1" class="block text-sm font-medium text-slate-300 mb-1">Largo cordón 1 (cm)</label>
-                                        <input type="number" id="continuousLength1" value="820" class="form-input">
-                                    </div>
-                                    <div>
-                                        <label for="continuousLength2" class="block text-sm font-medium text-slate-300 mb-1">Largo cordón 2 (cm)</label>
-                                        <input type="number" id="continuousLength2" value="815" class="form-input">
-                                    </div>
+                            <div class="flex items-start">
+                                <div class="bg-amber-500 text-white font-bold rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center mr-4 mt-1">2</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-700">FASE 2: Inferior</h3>
+                                    <p class="text-sm text-slate-500">2 cordones continuos para máxima penetración en la base.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                     <div class="flex justify-center gap-4">
-                        <button id="calculateBtn" type="button" class="btn btn-primary">Calcular Resultados</button>
-                        <button id="resetBtn" type="button" class="btn btn-secondary">Reiniciar Valores</button>
-                    </div>
-                </div>
+                </section>
+            </aside>
 
-                <!-- Columna de Resultados -->
-                <div class="space-y-6">
-                    <div class="card result-card">
-                        <h3 class="text-xl font-bold text-yellow-400 mb-4">Resultados por Viga</h3>
-                        <div class="space-y-4">
-                            <!-- Tiempos -->
-                            <div class="result-group">
-                                <p class="text-base font-semibold text-slate-300 mb-2">Tiempos de Soldadura</p>
-                                <div class="flex justify-between text-sm"><span>Lado Superior (Peregrino):</span><span id="resultTimePeregrino">--</span></div>
-                                <div class="flex justify-between text-sm"><span>Lado Inferior (Continuo):</span><span id="resultTimeContinuous">--</span></div>
-                                <div class="flex justify-between text-lg font-bold mt-2 pt-2 border-t border-slate-600"><span>Tiempo de Arco Total:</span><span id="resultTimeTotal">--</span></div>
-                            </div>
-                            <!-- Consumo Alambre -->
-                            <div class="result-group">
-                                <p class="text-base font-semibold text-slate-300 mb-2">Consumo de Alambre</p>
-                                 <div class="flex justify-between text-sm"><span>Lado Superior (Peregrino):</span><span id="resultWirePeregrino">--</span></div>
-                                <div class="flex justify-between text-sm"><span>Lado Inferior (Continuo):</span><span id="resultWireContinuous">--</span></div>
-                                <div class="flex justify-between text-lg font-bold mt-2 pt-2 border-t border-slate-600"><span>Consumo Total Alambre:</span><span id="resultWireTotal">--</span></div>
-                            </div>
-                            <!-- Consumo Gas -->
-                            <div class="result-group">
-                                 <p class="text-base font-semibold text-slate-300 mb-2">Consumo de Gas (CO₂)</p>
-                                 <div class="flex justify-between text-sm"><span>Lado Superior (Peregrino):</span><span id="resultGasPeregrino">--</span></div>
-                                 <div class="flex justify-between text-sm"><span>Lado Inferior (Continuo):</span><span id="resultGasContinuous">--</span></div>
-                                 <div class="flex justify-between text-lg font-bold mt-2 pt-2 border-t border-slate-600"><span>Consumo Total Gas:</span><span id="resultGasTotal">--</span></div>
-                            </div>
-                            <!-- Consumo por Metro -->
-                            <div class="result-group">
-                                 <p class="text-base font-semibold text-slate-300 mb-2">Rendimiento por Metro Lineal</p>
-                                 <div class="flex justify-between text-sm"><span>Alambre:</span><span id="resultWirePerMeter">--</span></div>
-                                 <div class="flex justify-between text-sm"><span>Gas (CO₂):</span><span id="resultGasPerMeter">--</span></div>
-                            </div>
+            <div class="lg:col-span-3 flex flex-col gap-8">
+                
+                <section id="kpis">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-slate-200">
+                             <div class="flex items-center">
+                                 <div class="bg-blue-100 text-blue-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                                 <div>
+                                     <p class="text-slate-500 font-semibold">Tiempo Total</p>
+                                     <div class="stat-number text-3xl font-bold text-slate-800">27 Minutos</div>
+                                 </div>
+                             </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-slate-200">
+                           <div class="flex items-center">
+                                <div class="bg-amber-100 text-amber-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" /></svg></div>
+                                <div>
+                                    <p class="text-slate-500 font-semibold">Alambre</p>
+                                    <div class="stat-number text-3xl font-bold text-slate-800">5.68 kg</div>
+                                </div>
+                           </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-slate-200">
+                             <div class="flex items-center">
+                                 <div class="bg-slate-200 text-slate-600 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg></div>
+                                 <div>
+                                     <p class="text-slate-500 font-semibold">Gas (CO₂)</p>
+                                     <div class="stat-number text-3xl font-bold text-slate-800">1.53 kg</div>
+                                 </div>
+                             </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-slate-200">
+                              <div class="flex items-center">
+                                  <div class="bg-red-100 text-red-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /></svg></div>
+                                 <div>
+                                     <p class="text-slate-500 font-semibold">Aporte Térmico</p>
+                                     <div class="stat-number text-3xl font-bold text-slate-800">14.02 kJ/cm</div>
+                                 </div>
+                              </div>
                         </div>
                     </div>
-                    <div class="card mt-6">
-                        <h3 class="text-xl font-bold text-yellow-400 border-b border-slate-600 pb-3 mb-4">Análisis del Experto</h3>
-                        <p class="text-sm text-slate-300 leading-relaxed">
-                            El proceso FCAW-G con alambre **ESAB Dual Shield 7100** es altamente productivo para esta aplicación. Los parámetros de 300A y 33.5V aseguran una alta tasa de deposición y una excelente penetración, ideal para estructuras de alta exigencia.
-                            <br><br>
-                            Se recomienda mantener un caudal de gas estable y proteger la zona de soldadura de corrientes de aire para evitar porosidad. La velocidad de avance es crítica para mantener la garganta de soldadura deseada (aprox. 5mm). Cualquier cambio en los parámetros afectará directamente los consumos y tiempos.
-                        </p>
+                </section>
+                
+                <section id="projection">
+                     <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200">
+                         <div class="flex items-center mb-4">
+                             <div class="bg-teal-100 text-teal-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></div>
+                             <h2 class="text-2xl font-bold text-slate-800">Proyección de Producción a Escala</h2>
+                         </div>
+                         <p class="text-slate-600 mb-6 text-sm">Estimación de consumibles y tiempo para órdenes de producción de mayor volumen.</p>
+                         <div class="projection-chart-container">
+                             <canvas id="projectionChart"></canvas>
+                         </div>
                     </div>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <section id="quality">
+                        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200 h-full">
+                            <div class="flex items-center mb-4">
+                                 <div class="bg-green-100 text-green-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 20.955a11.955 11.955 0 0118-8.001c0-1.294-.28-2.527-.78-3.642z" /></svg></div>
+                                 <h2 class="text-2xl font-bold text-slate-800">Calidad Mecánica</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                  <div>
+                                      <h3 class="text-lg font-bold text-center text-slate-600 mb-2">Análisis de Tensión (MPa)</h3>
+                                      <div class="chart-container">
+                                          <canvas id="tensileChart"></canvas>
+                                      </div>
+                                  </div>
+                                 <div>
+                                     <h3 class="text-lg font-bold text-center text-slate-600 mb-2">Impacto (Joules)</h3>
+                                     <div class="chart-container">
+                                         <canvas id="impactChart"></canvas>
+                                     </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="consumables">
+                         <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200 h-full">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-purple-100 text-purple-700 p-3 rounded-full mr-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" /></svg></div>
+                                <h2 class="text-2xl font-bold text-slate-800">Consumibles</h2>
+                            </div>
+                             <div class="chart-container">
+                                 <canvas id="consumablesChart"></canvas>
+                             </div>
+                             <p class="text-slate-600 mt-6 text-sm">El **alambre de aporte constituye el 79%** del peso total de consumibles.</p>
+                         </div>
+                    </section>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </main>
+    
+    <footer class="bg-[#022c43] text-white text-center mt-16 py-6">
+        <p class="text-[#ffd700] text-sm">Reporte Técnico Interactivo | &copy; 2025 Fábrica Marcelini</p>
+    </footer>
 
     <script>
+        // ... (El JavaScript permanece exactamente igual que en el código original)
+        const wrapLabel = (label, maxLength) => {
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const chartDefaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            family: "'Lato', sans-serif",
+                            size: 14,
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        font: {
+                            family: "'Lato', sans-serif",
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            family: "'Lato', sans-serif",
+                        }
+                    }
+                }
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
-            const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
-            const form = document.getElementById('weldingCalculatorForm');
-
-            const calculateResults = () => {
-                // --- Obtener valores de los inputs ---
-                const travelSpeed = getVal('travelSpeed'); // cm/min
-                const depositionRate = getVal('depositionRate'); // kg/h
-                const gasFlow = getVal('gasFlow'); // L/min por torcha
-                const torches = getVal('torches');
-
-                // Geometría superior (peregrino)
-                const peregrinoWelds1 = getVal('peregrinoWelds1');
-                const peregrinoWelds2 = getVal('peregrinoWelds2');
-                const peregrinoLength = getVal('peregrinoLength'); // cm
-                
-                // Geometría inferior (continuo)
-                const continuousLength1 = getVal('continuousLength1'); // cm
-                const continuousLength2 = getVal('continuousLength2'); // cm
-
-                if (travelSpeed === 0) {
-                    alert("La velocidad de avance no puede ser cero.");
-                    return;
-                }
-
-                // --- Cálculos ---
-                const gasDensityCO2 = 1.98 / 1000; // kg por litro
-
-                // 1. Longitudes y Tiempos
-                const totalLengthPeregrino1 = peregrinoWelds1 * peregrinoLength;
-                const totalLengthPeregrino2 = peregrinoWelds2 * peregrinoLength;
-                const maxPeregrinoLength = Math.max(totalLengthPeregrino1, totalLengthPeregrino2);
-                const maxContinuousLength = Math.max(continuousLength1, continuousLength2);
-
-                const timePeregrino = maxPeregrinoLength / travelSpeed; // minutos
-                const timeContinuous = maxContinuousLength / travelSpeed; // minutos
-                const totalArcTimeMinutes = timePeregrino + timeContinuous;
-
-                // 2. Consumo de Alambre
-                const wirePeregrinoKg = depositionRate * (timePeregrino / 60) * torches;
-                const wireContinuousKg = depositionRate * (timeContinuous / 60) * torches;
-                const totalWireKg = wirePeregrinoKg + wireContinuousKg;
-
-                // 3. Consumo de Gas
-                const gasPeregrinoLiters = gasFlow * torches * timePeregrino;
-                const gasContinuousLiters = gasFlow * torches * timeContinuous;
-                const totalGasLiters = gasPeregrinoLiters + gasContinuousLiters;
-                
-                const gasPeregrinoKg = gasPeregrinoLiters * gasDensityCO2;
-                const gasContinuousKg = gasContinuousLiters * gasDensityCO2;
-                const totalGasKg = totalGasLiters * gasDensityCO2;
-
-                // 4. Consumo por metro
-                const totalWeldLengthCm = totalLengthPeregrino1 + totalLengthPeregrino2 + continuousLength1 + continuousLength2;
-                const totalWeldLengthM = totalWeldLengthCm / 100;
-
-                let wirePerMeterKg = 0;
-                let gasPerMeterLiters = 0;
-                let gasPerMeterKg = 0;
-
-                if (totalWeldLengthM > 0) {
-                    wirePerMeterKg = totalWireKg / totalWeldLengthM;
-                    gasPerMeterLiters = totalGasLiters / totalWeldLengthM;
-                    gasPerMeterKg = totalGasKg / totalWeldLengthM;
-                }
-
-                // --- Mostrar resultados de Tiempo ---
-                document.getElementById('resultTimePeregrino').textContent = `${timePeregrino.toFixed(2)} min`;
-                document.getElementById('resultTimeContinuous').textContent = `${timeContinuous.toFixed(2)} min`;
-                document.getElementById('resultTimeTotal').textContent = `${totalArcTimeMinutes.toFixed(2)} min`;
-
-                // --- Mostrar resultados de Alambre ---
-                document.getElementById('resultWirePeregrino').textContent = `${wirePeregrinoKg.toFixed(2)} kg`;
-                document.getElementById('resultWireContinuous').textContent = `${wireContinuousKg.toFixed(2)} kg`;
-                document.getElementById('resultWireTotal').textContent = `${totalWireKg.toFixed(2)} kg`;
-
-                // --- Mostrar resultados de Gas ---
-                document.getElementById('resultGasPeregrino').textContent = `${gasPeregrinoKg.toFixed(2)} kg (${gasPeregrinoLiters.toFixed(0)} L)`;
-                document.getElementById('resultGasContinuous').textContent = `${gasContinuousKg.toFixed(2)} kg (${gasContinuousLiters.toFixed(0)} L)`;
-                document.getElementById('resultGasTotal').textContent = `${totalGasKg.toFixed(2)} kg (${totalGasLiters.toFixed(0)} L)`;
-                
-                // --- Mostrar resultados por metro ---
-                document.getElementById('resultWirePerMeter').textContent = `${wirePerMeterKg.toFixed(3)} kg/m`;
-                document.getElementById('resultGasPerMeter').textContent = `${gasPerMeterKg.toFixed(3)} kg/m (${gasPerMeterLiters.toFixed(2)} L/m)`;
-
-            };
             
-            const resetValues = () => {
-                form.reset();
-                // Usamos un pequeño delay para asegurar que el DOM se actualice antes de recalcular
-                setTimeout(calculateResults, 0);
-            };
+            new Chart(document.getElementById('consumablesChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Alambre Consumido (kg)', 'Gas CO₂ (kg)'],
+                    datasets: [{
+                        data: [5.68, 1.53],
+                        backgroundColor: ['#d97706', '#64748b'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                },
+                options: { ...chartDefaultOptions, scales: {} }
+            });
+            
+            new Chart(document.getElementById('tensileChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Límite de Flujo', 'Resistencia a la Tracción'],
+                    datasets: [{
+                        label: 'Resistencia (MPa)',
+                        data: [491, 563],
+                        backgroundColor: ['#3b82f6', '#1e40af'],
+                        borderRadius: 4,
+                        barPercentage: 0.6
+                    }]
+                },
+                options: { ...chartDefaultOptions, plugins: { ...chartDefaultOptions.plugins, legend: { display: false } } }
+            });
 
-            // --- Event Listeners ---
-            document.getElementById('calculateBtn').addEventListener('click', calculateResults);
-            document.getElementById('resetBtn').addEventListener('click', resetValues);
+            new Chart(document.getElementById('impactChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Impacto a 0°C', 'Impacto a -20°C'],
+                    datasets: [{
+                        label: 'Energía Absorbida (Joules)',
+                        data: [90, 58],
+                        backgroundColor: ['#f59e0b', '#d97706'],
+                        borderRadius: 4,
+                        barPercentage: 0.6
+                    }]
+                },
+                options: { ...chartDefaultOptions, plugins: { ...chartDefaultOptions.plugins, legend: { display: false } } }
+            });
 
-            // Calcular al cargar la página con los valores iniciales
-            calculateResults();
+            const projectionLabels = Array.from({ length: 10 }, (_, i) => (i + 1) * 10);
+            const projectionWireData = projectionLabels.map(v => v * 5.68);
+            const projectionTimeData = projectionLabels.map(v => (v * 27.33) / 60);
+
+            new Chart(document.getElementById('projectionChart'), {
+                type: 'line',
+                data: {
+                    labels: projectionLabels.map(l => `${l} Vigas`),
+                    datasets: [
+                        {
+                            label: 'Consumo Alambre (kg)',
+                            data: projectionWireData,
+                            borderColor: '#d97706',
+                            backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Tiempo Producción (Horas)',
+                            data: projectionTimeData,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    ...chartDefaultOptions,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Consumo de Alambre (kg)', color: '#d97706' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Tiempo de Producción (Horas)', color: '#3b82f6' },
+                            grid: { drawOnChartArea: false }
+                        },
+                        x: { ...chartDefaultOptions.scales.x }
+                    }
+                }
+            });
         });
     </script>
 </body>
 </html>
+```
